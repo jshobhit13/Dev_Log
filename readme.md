@@ -208,13 +208,3 @@ Please follow the [Conventional Commits](https://www.conventionalcommits.org/) f
 
 ---
 
-## License
-
-MIT License. See [LICENSE](./LICENSE) for details.
-
----
-
-## Author
-
-Built by **Shobhit Jain**  
-[GitHub](https://github.com/jshobhit13) · [LinkedIn](https://linkedin.com/in/jshobhit13) · jshobhit8172@gmail.com
