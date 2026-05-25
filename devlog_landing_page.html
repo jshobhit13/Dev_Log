@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevLog</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
+    --border:#30363d;--border2:#3d444d;
+    --text:#e6edf3;--muted:#7d8590;--muted2:#484f58;
+    --green:#3fb950;--green2:#238636;--green3:#0d4429;
+    --orange:#f0883e;--blue:#388bfd;--purple:#bc8cff;
+    --yellow:#d29922;--red:#f85149;
+    --accent:#39d353;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;}
+  code,pre,.mono{font-family:'JetBrains Mono',monospace;}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-0.5px;}
+  .logo-icon{width:28px;height:28px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .logo-icon svg{width:16px;height:16px;stroke:#0d1117;stroke-width:2.5;fill:none;}
+  .nav-links{display:flex;gap:24px;align-items:center;}
+  .nav-links a{color:var(--muted);font-size:14px;text-decoration:none;font-family:'JetBrains Mono',monospace;transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{background:var(--green2);color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;border:1px solid var(--accent);cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
+  .nav-cta:hover{background:var(--accent);color:#0d1117;}
+
+  /* HERO */
+  .hero{padding:80px 40px 60px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:20px;}
+  .badge-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .hero h1{font-size:52px;font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:16px;}
+  .hero h1 .hl{color:var(--accent);}
+  .hero p{font-size:17px;color:var(--muted);line-height:1.6;margin-bottom:28px;font-family:'JetBrains Mono',monospace;font-size:14px;}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn-primary{background:var(--green2);color:#fff;padding:10px 22px;border-radius:6px;font-size:14px;font-weight:600;border:1px solid var(--accent);cursor:pointer;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:8px;}
+  .btn-primary:hover{background:var(--accent);color:#0d1117;}
+  .btn-ghost{background:transparent;color:var(--text);padding:10px 22px;border-radius:6px;font-size:14px;font-weight:600;border:1px solid var(--border2);cursor:pointer;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:8px;}
+  .btn-ghost:hover{border-color:var(--muted);background:var(--bg2);}
+
+  /* STATS ROW */
+  .stats-row{display:flex;gap:28px;margin-top:32px;}
+  .stat{display:flex;flex-direction:column;}
+  .stat-val{font-size:22px;font-weight:800;color:var(--text);font-family:'JetBrains Mono',monospace;}
+  .stat-val span{color:var(--accent);}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.5px;}
+
+  /* HERO CARD — RIGHT SIDE */
+  .hero-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .card-header{background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:8px;}
+  .dot{width:12px;height:12px;border-radius:50%;}
+  .dot-r{background:#f85149;}
+  .dot-y{background:#d29922;}
+  .dot-g{background:#3fb950;}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-left:8px;}
+  .card-body{padding:16px;}
+  .cli-line{font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:8px;}
+  .cli-prompt{color:var(--green);}
+  .cli-cmd{color:var(--text);}
+  .cli-arg{color:var(--orange);}
+  .cli-output{color:var(--muted);font-size:12px;padding-left:12px;border-left:2px solid var(--border);margin:4px 0 12px;}
+
+  /* CONTRIBUTION GRAPH */
+  .contrib-section{padding:60px 40px;max-width:1100px;margin:0 auto;}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+  .section-title{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:8px;}
+  .section-sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-bottom:32px;}
+  .graph-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
+  .graph-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .graph-name{font-size:14px;font-weight:600;}
+  .graph-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+  .months-row{display:flex;gap:2px;margin-bottom:6px;}
+  .month-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);flex:1;text-align:center;}
+  .graph-grid{display:flex;gap:3px;}
+  .week-col{display:flex;flex-direction:column;gap:3px;}
+  .day-cell{width:11px;height:11px;border-radius:2px;background:var(--bg3);}
+  .l1{background:var(--green3);}
+  .l2{background:#196c2e;}
+  .l3{background:#238636;}
+  .l4{background:var(--accent);}
+  .graph-legend{display:flex;align-items:center;gap:6px;margin-top:12px;justify-content:flex-end;}
+  .legend-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+  .legend-cells{display:flex;gap:3px;}
+
+  /* STANDUP DIFF VIEW */
+  .diff-section{padding:40px 40px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  .diff-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .diff-header{padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .diff-header-left{display:flex;align-items:center;gap:8px;}
+  .file-icon{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(63,185,80,.15);color:var(--accent);padding:2px 8px;border-radius:4px;}
+  .diff-filename{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);}
+  .diff-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+  .diff-body{padding:0;}
+  .diff-line{display:flex;gap:0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;}
+  .diff-num{min-width:36px;padding:0 8px;text-align:right;color:var(--muted2);border-right:1px solid var(--border);user-select:none;font-size:11px;}
+  .diff-content{padding:0 12px;flex:1;}
+  .diff-add{background:rgba(63,185,80,.07);}
+  .diff-add .diff-content{color:var(--green);}
+  .diff-add .diff-num{color:rgba(63,185,80,.5);}
+  .diff-del{background:rgba(248,81,73,.07);}
+  .diff-del .diff-content{color:var(--red);}
+  .diff-ctx .diff-content{color:var(--muted);}
+
+  /* FEATURES GRID */
+  .features{padding:60px 40px;max-width:1100px;margin:0 auto;}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;}
+  .feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color .2s;}
+  .feat-card:hover{border-color:var(--border2);}
+  .feat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:18px;}
+  .feat-icon-green{background:rgba(63,185,80,.12);}
+  .feat-icon-blue{background:rgba(56,139,253,.12);}
+  .feat-icon-purple{background:rgba(188,140,255,.12);}
+  .feat-icon-orange{background:rgba(240,136,62,.12);}
+  .feat-icon-yellow{background:rgba(210,153,34,.12);}
+  .feat-icon-red{background:rgba(248,81,73,.12);}
+  .feat-name{font-size:15px;font-weight:600;margin-bottom:6px;}
+  .feat-desc{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);line-height:1.6;}
+  .feat-tag{display:inline-block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid;}
+
+  /* PROBLEM TRACKER — LEETCODE STYLE */
+  .tracker-section{padding:60px 40px;max-width:1100px;margin:0 auto;}
+  .tracker-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .tracker-topbar{background:var(--bg3);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .tracker-tabs{display:flex;gap:4px;}
+  .tab{font-family:'JetBrains Mono',monospace;font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;color:var(--muted);}
+  .tab.active{background:var(--bg2);color:var(--text);border:1px solid var(--border);}
+  .tracker-stats{display:flex;gap:16px;}
+  .t-stat{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+  .t-stat b{color:var(--text);}
+  .tracker-body{padding:0;}
+  .log-row{display:flex;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);gap:12px;transition:background .15s;}
+  .log-row:hover{background:var(--bg3);}
+  .log-row:last-child{border-bottom:none;}
+  .log-diff{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 10px;border-radius:4px;min-width:64px;text-align:center;}
+  .diff-easy{background:rgba(63,185,80,.12);color:var(--green);}
+  .diff-med{background:rgba(210,153,34,.12);color:var(--yellow);}
+  .diff-hard{background:rgba(248,81,73,.12);color:var(--red);}
+  .log-title{font-size:14px;font-weight:600;flex:1;}
+  .log-tags{display:flex;gap:6px;}
+  .log-tag{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+  .log-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+  .log-status{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+  .status-done{background:rgba(63,185,80,.15);}
+  .status-blocked{background:rgba(248,81,73,.15);}
+  .status-doing{background:rgba(210,153,34,.15);}
+
+  /* STREAK BANNER */
+  .streak-section{padding:0 40px 60px;max-width:1100px;margin:0 auto;}
+  .streak-card{background:linear-gradient(135deg,var(--bg2) 0%,#0d2116 100%);border:1px solid rgba(63,185,80,.2);border-radius:12px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;}
+  .streak-left h3{font-size:28px;font-weight:800;letter-spacing:-1px;}
+  .streak-left h3 span{color:var(--accent);}
+  .streak-left p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:4px;}
+  .streak-flame{font-size:48px;line-height:1;}
+  .streak-badges{display:flex;gap:12px;margin-top:16px;}
+  .s-badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid rgba(63,185,80,.3);color:var(--accent);background:rgba(63,185,80,.05);}
+
+  /* CTA */
+  .cta-section{padding:80px 40px;text-align:center;border-top:1px solid var(--border);}
+  .cta-section h2{font-size:40px;font-weight:800;letter-spacing:-1.5px;margin-bottom:12px;}
+  .cta-section p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-bottom:28px;}
+  .cta-terminal{display:inline-flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-family:'JetBrains Mono',monospace;font-size:14px;margin-bottom:24px;}
+  .cta-prompt{color:var(--accent);}
+  .cta-actions{display:flex;gap:12px;justify-content:center;}
+
+  footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-left{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+  .footer-links{display:flex;gap:20px;}
+  .footer-links a{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .fade-up{animation:fadeUp .5s ease both;}
+  .delay-1{animation-delay:.1s;}
+  .delay-2{animation-delay:.2s;}
+  .delay-3{animation-delay:.3s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4"/></svg>
+    </div>
+    DevLog
+  </div>
+  <div class="nav-links">
+    <a href="#">features</a>
+    <a href="#">docs</a>
+    <a href="#">cli</a>
+    <a href="#">github</a>
+  </div>
+  <button class="nav-cta">$ npm install -g devlog</button>
+</nav>
+
+<section class="hero">
+  <div class="fade-up">
+    <div class="hero-badge"><span class="badge-dot"></span> v1.0 — now with streak tracking</div>
+    <h1>Your dev work,<br/>finally <span class="hl">logged.</span></h1>
+    <p class="mono">// standup-ready. git-linked. streak-driven.<br/>// no more "what did I do yesterday?"</p>
+    <div class="hero-actions">
+      <button class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1v10M3 7l5 5 5-5"/><path d="M1 14h14"/></svg>
+        Get started free
+      </button>
+      <button class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2C4.13 2 1 5.13 1 9c0 3.09 2.01 5.71 4.79 6.63.35.06.48-.15.48-.34 0-.17-.01-.73-.01-1.32-1.95.42-2.36-.47-2.51-.9-.08-.21-.44-.9-.75-1.08-.26-.14-.63-.49-.01-.5.58-.01.99.53 1.13.75.66 1.11 1.72.79 2.14.6.07-.47.26-.79.47-.97-1.65-.19-3.38-.82-3.38-3.65 0-.81.29-1.47.75-1.98-.07-.19-.33-.94.07-1.95 0 0 .61-.19 2 .75.58-.16 1.2-.24 1.82-.24.62 0 1.24.08 1.82.24 1.39-.94 2-.75 2-.75.4 1.01.14 1.76.07 1.95.46.51.75 1.17.75 1.98 0 2.84-1.74 3.46-3.39 3.65.27.23.5.67.5 1.35 0 .97-.01 1.76-.01 2 0 .19.13.41.48.34A7 7 0 0015 9c0-3.87-3.13-7-7-7z"/></svg>
+        View on GitHub
+      </button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-val"><span>247</span></div><div class="stat-label">GitHub stars</div></div>
+      <div class="stat"><div class="stat-val"><span>1.2k</span></div><div class="stat-label">devs logging</div></div>
+      <div class="stat"><div class="stat-val"><span>38k</span></div><div class="stat-label">entries today</div></div>
+    </div>
+  </div>
+
+  <div class="hero-card fade-up delay-2">
+    <div class="card-header">
+      <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+      <span class="card-title">terminal — devlog cli</span>
+    </div>
+    <div class="card-body">
+      <div class="cli-line"><span class="cli-prompt">~</span> <span class="cli-cmd">devlog add </span><span class="cli-arg">"fixed JWT refresh token bug"</span></div>
+      <div class="cli-output">✓ Entry saved · tagged: #bug · 09:43 AM</div>
+      <div class="cli-line"><span class="cli-prompt">~</span> <span class="cli-cmd">devlog add </span><span class="cli-arg">"started dashboard redesign" --tag feature</span></div>
+      <div class="cli-output">✓ Entry saved · tagged: #feature · 11:20 AM</div>
+      <div class="cli-line"><span class="cli-prompt">~</span> <span class="cli-cmd">devlog summary </span><span class="cli-arg">--week</span></div>
+      <div class="cli-output" style="border-color:rgba(63,185,80,.3);color:var(--green);">
+        📋 Week of May 19–25<br/>
+        → 12 entries · 3 features · 4 bugs fixed<br/>
+        → 0 unresolved blockers<br/>
+        → 🔥 5-day streak maintained
+      </div>
+      <div class="cli-line"><span class="cli-prompt" style="color:var(--accent)">▮</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRIBUTION GRAPH -->
+<section class="contrib-section fade-up delay-1">
+  <div class="section-label">activity</div>
+  <div class="section-title">Your dev activity, visualized.</div>
+  <div class="section-sub">// like GitHub's contribution graph — but for your actual engineering output</div>
+  <div class="graph-wrap">
+    <div class="graph-top">
+      <span class="graph-name">@shobhit — 287 log entries this year</span>
+      <span class="graph-count" style="color:var(--accent)">🔥 23-day streak</span>
+    </div>
+    <div id="contrib-graph"></div>
+    <div class="graph-legend">
+      <span class="legend-label">Less</span>
+      <div class="legend-cells">
+        <div class="day-cell"></div>
+        <div class="day-cell l1"></div>
+        <div class="day-cell l2"></div>
+        <div class="day-cell l3"></div>
+        <div class="day-cell l4"></div>
+      </div>
+      <span class="legend-label">More</span>
+    </div>
+  </div>
+</section>
+
+<!-- STANDUP DIFF -->
+<section class="diff-section">
+  <div>
+    <div class="section-label">daily log</div>
+    <div class="section-title" style="font-size:26px;">Your standup,<br/>as a git diff.</div>
+    <div class="section-sub" style="margin-bottom:16px;">// each day's log reads like a clean commit —<br/>// what changed, what broke, what's next.</div>
+    <div class="diff-card">
+      <div class="diff-header">
+        <div class="diff-header-left">
+          <span class="file-icon">MON</span>
+          <span class="diff-filename">standup_2025-05-20.md</span>
+        </div>
+        <span class="diff-meta">+7 −2</span>
+      </div>
+      <div class="diff-body">
+        <div class="diff-line diff-ctx"><span class="diff-num">1</span><span class="diff-content">## Yesterday</span></div>
+        <div class="diff-line diff-del"><span class="diff-num">2</span><span class="diff-content">- Struggled with the auth flow</span></div>
+        <div class="diff-line diff-add"><span class="diff-num">2</span><span class="diff-content">+ Fixed JWT refresh token bug</span></div>
+        <div class="diff-line diff-add"><span class="diff-num">3</span><span class="diff-content">+ Refactored middleware/auth.js</span></div>
+        <div class="diff-line diff-ctx"><span class="diff-num">4</span><span class="diff-content"> </span></div>
+        <div class="diff-line diff-ctx"><span class="diff-num">5</span><span class="diff-content">## Today</span></div>
+        <div class="diff-line diff-add"><span class="diff-num">6</span><span class="diff-content">+ Begin dashboard component</span></div>
+        <div class="diff-line diff-add"><span class="diff-num">7</span><span class="diff-content">+ Wire up /logs API endpoint</span></div>
+        <div class="diff-line diff-ctx"><span class="diff-num">8</span><span class="diff-content"> </span></div>
+        <div class="diff-line diff-ctx"><span class="diff-num">9</span><span class="diff-content">## Blockers</span></div>
+        <div class="diff-line diff-del"><span class="diff-num">10</span><span class="diff-content">- MongoDB Atlas connection drops</span></div>
+        <div class="diff-line diff-add"><span class="diff-num">10</span><span class="diff-content">+ ✓ Resolved via connection pool fix</span></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label" style="margin-top:42px;">problem mode</div>
+    <div class="section-title" style="font-size:26px;">Daily logs as<br/>solved problems.</div>
+    <div class="section-sub" style="margin-bottom:16px;">// treat your workday like a LeetCode contest.<br/>// every blocker resolved = problem solved.</div>
+    <div class="tracker-wrap">
+      <div class="tracker-topbar">
+        <div class="tracker-tabs">
+          <div class="tab active">All</div>
+          <div class="tab">Bugs</div>
+          <div class="tab">Features</div>
+        </div>
+        <div class="tracker-stats">
+          <span class="t-stat"><b style="color:var(--green)">8</b> solved</span>
+          <span class="t-stat"><b style="color:var(--yellow)">2</b> in progress</span>
+          <span class="t-stat"><b style="color:var(--red)">1</b> blocked</span>
+        </div>
+      </div>
+      <div class="tracker-body">
+        <div class="log-row">
+          <div class="log-status status-done"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>
+          <span class="log-diff diff-easy">Easy</span>
+          <span class="log-title">Fix login redirect bug</span>
+          <div class="log-tags"><span class="log-tag">#bug</span></div>
+          <span class="log-time">09:43</span>
+        </div>
+        <div class="log-row">
+          <div class="log-status status-done"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>
+          <span class="log-diff diff-med">Medium</span>
+          <span class="log-title">Dashboard component skeleton</span>
+          <div class="log-tags"><span class="log-tag">#feature</span></div>
+          <span class="log-time">11:20</span>
+        </div>
+        <div class="log-row">
+          <div class="log-status status-doing"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3" fill="#d29922"/></svg></div>
+          <span class="log-diff diff-med">Medium</span>
+          <span class="log-title">Wire up /logs GET endpoint</span>
+          <div class="log-tags"><span class="log-tag">#backend</span></div>
+          <span class="log-time">14:05</span>
+        </div>
+        <div class="log-row">
+          <div class="log-status status-blocked"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#f85149" stroke-width="2"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></div>
+          <span class="log-diff diff-hard">Hard</span>
+          <span class="log-title">GitHub OAuth integration</span>
+          <div class="log-tags"><span class="log-tag">#blocker</span></div>
+          <span class="log-time">16:30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-label">features</div>
+  <div class="section-title">Everything a dev needs to stay accountable.</div>
+  <div class="section-sub">// markdown support · offline first · git-native · export ready</div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-green"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#3fb950" stroke-width="1.8"><rect x="2" y="3" width="16" height="14" rx="2"/><line x1="6" y1="8" x2="14" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg></div>
+      <div class="feat-name">Daily Log Entry</div>
+      <div class="feat-desc">Markdown-powered standup editor with yesterday / today / blockers format. Autosaves as you type.</div>
+      <div class="feat-tag" style="color:var(--green);border-color:rgba(63,185,80,.3)">core</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-orange"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#f0883e" stroke-width="1.8"><polyline points="4,14 8,10 11,13 16,7"/><circle cx="16" cy="7" r="1.5" fill="#f0883e"/></svg></div>
+      <div class="feat-name">Streak Tracker</div>
+      <div class="feat-desc">Contribution graph + daily streak counter keeps you in the habit. Don't break the chain.</div>
+      <div class="feat-tag" style="color:var(--orange);border-color:rgba(240,136,62,.3)">habit</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-purple"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#bc8cff" stroke-width="1.8"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"/><path d="M8 10l2 2 4-4"/></svg></div>
+      <div class="feat-name">GitHub OAuth</div>
+      <div class="feat-desc">Link log entries to specific commits. See which work items map to which pushes automatically.</div>
+      <div class="feat-tag" style="color:var(--purple);border-color:rgba(188,140,255,.3)">integration</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#388bfd" stroke-width="1.8"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg></div>
+      <div class="feat-name">Tag System</div>
+      <div class="feat-desc">Categorize entries as #bug, #feature, #review, #meeting, or custom tags. Filter by project anytime.</div>
+      <div class="feat-tag" style="color:var(--blue);border-color:rgba(56,139,253,.3)">organize</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-yellow"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#d29922" stroke-width="1.8"><path d="M4 4h12v2H4zM4 10h8v2H4zM4 16h6v2H4z"/></svg></div>
+      <div class="feat-name">Weekly Summary</div>
+      <div class="feat-desc">Auto-generates a formatted weekly report. Paste straight into Slack, Notion, or your perf review.</div>
+      <div class="feat-tag" style="color:var(--yellow);border-color:rgba(210,153,34,.3)">report</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon feat-icon-red"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#f85149" stroke-width="1.8"><rect x="3" y="3" width="14" height="14" rx="2"/><line x1="8" y1="3" x2="8" y2="17"/><line x1="13" y1="8" x2="17" y2="8"/></svg></div>
+      <div class="feat-name">CLI Tool</div>
+      <div class="feat-desc">Log from your terminal without leaving your IDE. <code style="font-size:11px;color:var(--red)">devlog add "..."</code> and you're done.</div>
+      <div class="feat-tag" style="color:var(--red);border-color:rgba(248,81,73,.3)">cli</div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAK BANNER -->
+<section class="streak-section">
+  <div class="streak-card">
+    <div class="streak-left">
+      <h3>Build a <span>23-day</span> streak.</h3>
+      <p>// devs who log daily ship 3x more consistently.</p>
+      <div class="streak-badges">
+        <span class="s-badge">🏆 7-day badge</span>
+        <span class="s-badge">🔥 30-day badge</span>
+        <span class="s-badge">💎 100-day badge</span>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div class="streak-flame">🔥</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:8px;">current streak</div>
+      <div style="font-size:36px;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace;letter-spacing:-2px;">23</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Start logging today.</h2>
+  <p>// your future self will thank you at the next perf review.</p>
+  <div class="cta-terminal">
+    <span class="cta-prompt">$</span>
+    <span class="mono" style="color:var(--text)">npm install -g devlog</span>
+  </div>
+  <div class="cta-actions">
+    <button class="btn-primary" style="justify-content:center;">Get started — it's free</button>
+    <button class="btn-ghost" style="justify-content:center;">Read the docs</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">© 2025 DevLog · built for devs by devs</div>
+  <div class="footer-links">
+    <a href="#">github</a>
+    <a href="#">docs</a>
+    <a href="#">cli</a>
+    <a href="#">changelog</a>
+  </div>
+</footer>
+
+<script>
+const graph = document.getElementById('contrib-graph');
+const weeks = 52;
+const days = 7;
+const cols = [];
+const levels = [0,0,0,1,1,2,2,3,4];
+for(let w=0;w<weeks;w++){
+  const col = document.createElement('div');
+  col.className='week-col';
+  col.style.cssText='display:flex;flex-direction:column;gap:3px;';
+  for(let d=0;d<days;d++){
+    const cell = document.createElement('div');
+    cell.className='day-cell';
+    const r = Math.random();
+    if(r>.85){const l=levels[Math.floor(Math.random()*levels.length)];if(l>0)cell.classList.add('l'+l);}
+    else if(r>.65){cell.classList.add('l1');}
+    col.appendChild(cell);
+  }
+  cols.push(col);
+}
+const wrap = document.createElement('div');
+wrap.style.cssText='display:flex;gap:3px;overflow:hidden;';
+cols.forEach(c=>wrap.appendChild(c));
+graph.appendChild(wrap);
+
+const last23 = cols.slice(-24);
+last23.forEach((col,wi)=>{
+  Array.from(col.children).forEach((cell,di)=>{
+    if(Math.random()>.2){cell.className='day-cell l3';if(Math.random()>.6)cell.classList.replace('l3','l4');}
+  });
+});
+</script>
+</body>
+</html>
