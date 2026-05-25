@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
+  --border:#30363d;--border2:#3d444d;
+  --text:#e6edf3;--muted:#8b949e;--muted2:#484f58;
+  --green:#3fb950;--green2:#238636;--green3:#0d4429;
+  --orange:#f0883e;--blue:#58a6ff;--purple:#bc8cff;
+  --yellow:#d29922;--red:#f85149;--accent:#39d353;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden;}
+.mono{font-family:'DM Mono',monospace;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:12px 36px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;letter-spacing:-.2px;color:var(--text);}
+.logo-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;}
+.nav-links{display:flex;gap:20px;}
+.nav-links a{color:var(--muted);font-size:13px;text-decoration:none;font-weight:400;transition:color .15s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--bg2);color:var(--text);padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--border2);cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:.2px;transition:border-color .15s,background .15s;}
+.nav-cta:hover{border-color:var(--accent);background:var(--bg3);}
+
+.hero{padding:72px 36px 56px;max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(57,211,83,.08);border:1px solid rgba(57,211,83,.2);border-radius:20px;padding:3px 12px;font-size:11px;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:20px;}
+.badge-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:40px;font-weight:600;line-height:1.15;letter-spacing:-.8px;margin-bottom:14px;color:var(--text);}
+.hero h1 em{font-style:normal;color:var(--accent);}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px;max-width:400px;}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;}
+.btn-p{background:var(--green2);color:#fff;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;border:1px solid rgba(57,211,83,.4);cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.btn-p:hover{background:var(--green);}
+.btn-g{background:transparent;color:var(--text);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;border:1px solid var(--border2);cursor:pointer;font-family:'Inter',sans-serif;transition:border-color .15s,background .15s;}
+.btn-g:hover{border-color:var(--muted);background:var(--bg2);}
+.stats-row{display:flex;gap:28px;}
+.stat-val{font-size:20px;font-weight:600;color:var(--text);font-family:'DM Mono',monospace;letter-spacing:-.5px;}
+.stat-val span{color:var(--accent);}
+.stat-label{font-size:11px;color:var(--muted);margin-top:1px;text-transform:uppercase;letter-spacing:.4px;}
+
+.hero-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.card-header{background:var(--bg3);border-bottom:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:7px;}
+.dot{width:11px;height:11px;border-radius:50%;}
+.dot-r{background:#f85149;}.dot-y{background:#d29922;}.dot-g{background:#3fb950;}
+.card-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-left:6px;}
+.card-body{padding:14px 16px;}
+.cl{font-family:'DM Mono',monospace;font-size:12px;line-height:1.8;margin-bottom:2px;}
+.cp{color:var(--accent);}
+.cc{color:var(--text);}
+.ca{color:var(--orange);}
+.co{color:var(--muted);font-size:11px;padding-left:10px;border-left:2px solid var(--border);margin:3px 0 12px;line-height:1.6;}
+
+.section{padding:56px 36px;max-width:1060px;margin:0 auto;}
+.s-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;}
+.s-title{font-size:26px;font-weight:600;letter-spacing:-.4px;margin-bottom:6px;color:var(--text);}
+.s-sub{font-size:13px;color:var(--muted);margin-bottom:32px;line-height:1.6;}
+
+.graph-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 22px;}
+.graph-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.graph-name{font-size:13px;font-weight:500;color:var(--text);}
+.graph-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);}
+.graph-legend{display:flex;align-items:center;gap:5px;margin-top:10px;justify-content:flex-end;}
+.legend-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.legend-cells{display:flex;gap:2px;}
+.day-cell{width:10px;height:10px;border-radius:2px;background:var(--bg3);}
+.l1{background:#0d4429;}.l2{background:#196c2e;}.l3{background:#238636;}.l4{background:#39d353;}
+
+.diff-section{padding:40px 36px;max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+.diff-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.diff-hdr{padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.file-badge{font-family:'DM Mono',monospace;font-size:10px;background:rgba(57,211,83,.1);color:var(--accent);padding:2px 8px;border-radius:4px;}
+.diff-fn{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);}
+.diff-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.dl{display:flex;font-family:'DM Mono',monospace;font-size:11px;line-height:1.75;}
+.dn{min-width:32px;padding:0 8px;text-align:right;color:var(--muted2);border-right:1px solid var(--border);font-size:10px;user-select:none;}
+.dc{padding:0 10px;flex:1;}
+.d-add{background:rgba(57,211,83,.06);}.d-add .dc{color:#3fb950;}.d-add .dn{color:rgba(57,211,83,.4);}
+.d-del{background:rgba(248,81,73,.06);}.d-del .dc{color:#f85149;}
+.d-ctx .dc{color:var(--muted);}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px;transition:border-color .15s;}
+.feat-card:hover{border-color:var(--border2);}
+.feat-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.fi-g{background:rgba(57,211,83,.1);}
+.fi-b{background:rgba(88,166,255,.1);}
+.fi-p{background:rgba(188,140,255,.1);}
+.fi-o{background:rgba(240,136,62,.1);}
+.fi-y{background:rgba(210,153,34,.1);}
+.fi-r{background:rgba(248,81,73,.1);}
+.feat-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px;}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.feat-tag{display:inline-block;margin-top:10px;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;border:1px solid;}
+
+.tracker-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.tracker-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;}
+.t-tabs{display:flex;gap:3px;}
+.tab{font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;border-radius:5px;cursor:pointer;color:var(--muted);}
+.tab.active{background:var(--bg2);color:var(--text);border:1px solid var(--border);}
+.t-stats{display:flex;gap:14px;}
+.ts-item{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.log-row{display:flex;align-items:center;padding:10px 18px;border-bottom:1px solid var(--border);gap:10px;transition:background .12s;}
+.log-row:hover{background:var(--bg3);}
+.log-row:last-child{border-bottom:none;}
+.diff-pill{font-family:'DM Mono',monospace;font-size:10px;padding:2px 9px;border-radius:4px;min-width:58px;text-align:center;}
+.e{background:rgba(57,211,83,.1);color:#3fb950;}
+.m{background:rgba(210,153,34,.1);color:#d29922;}
+.h{background:rgba(248,81,73,.1);color:#f85149;}
+.log-title{font-size:13px;font-weight:400;flex:1;color:var(--text);}
+.log-tags{display:flex;gap:5px;}
+.log-tag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+.log-time{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
+.ls{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ls-done{background:rgba(57,211,83,.12);}
+.ls-doing{background:rgba(210,153,34,.12);}
+.ls-block{background:rgba(248,81,73,.12);}
+
+.streak-card{background:var(--bg2);border:1px solid rgba(57,211,83,.15);border-radius:10px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;}
+.streak-left h3{font-size:22px;font-weight:600;letter-spacing:-.3px;color:var(--text);}
+.streak-left h3 em{font-style:normal;color:var(--accent);}
+.streak-left p{font-size:12px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace;}
+.s-badges{display:flex;gap:8px;margin-top:14px;}
+.s-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:5px;border:1px solid rgba(57,211,83,.2);color:var(--accent);background:rgba(57,211,83,.04);}
+.streak-num{font-family:'DM Mono',monospace;font-size:36px;font-weight:500;color:var(--accent);letter-spacing:-2px;text-align:right;}
+.streak-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:right;margin-top:2px;}
+
+.cta-section{padding:72px 36px;text-align:center;border-top:1px solid var(--border);}
+.cta-section h2{font-size:32px;font-weight:600;letter-spacing:-.5px;margin-bottom:10px;color:var(--text);}
+.cta-section p{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.cta-cmd{display:inline-flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:9px 18px;font-family:'DM Mono',monospace;font-size:13px;margin-bottom:20px;color:var(--text);}
+.cta-prompt{color:var(--accent);}
+.cta-actions{display:flex;gap:10px;justify-content:center;}
+
+footer{border-top:1px solid var(--border);padding:18px 36px;display:flex;justify-content:space-between;align-items:center;}
+.footer-left{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.footer-links{display:flex;gap:18px;}
+.footer-links a{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;}
+.footer-links a:hover{color:var(--text);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;}}
+.fu{animation:fadeUp .4s ease both;}
+.d1{animation-delay:.05s;}.d2{animation-delay:.12s;}.d3{animation-delay:.2s;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><div class="logo-dot"></div>DevLog</div>
+  <div class="nav-links">
+    <a href="#">features</a>
+    <a href="#">docs</a>
+    <a href="#">cli</a>
+    <a href="#">github</a>
+  </div>
+  <button class="nav-cta">npm install -g devlog</button>
+</nav>
+
+<section class="hero">
+  <div class="fu">
+    <div class="hero-badge"><span class="badge-dot"></span>v1.0 — streak tracking live</div>
+    <h1>Your dev work,<br/>finally <em>logged.</em></h1>
+    <p class="hero-sub">Standup-ready. Git-linked. Streak-driven. Stop losing context on what you actually shipped.</p>
+    <div class="hero-actions">
+      <button class="btn-p">Get started free</button>
+      <button class="btn-g">View on GitHub</button>
+    </div>
+    <div class="stats-row">
+      <div><div class="stat-val"><span>247</span></div><div class="stat-label">stars</div></div>
+      <div><div class="stat-val"><span>1.2k</span></div><div class="stat-label">devs</div></div>
+      <div><div class="stat-val"><span>38k</span></div><div class="stat-label">entries</div></div>
+    </div>
+  </div>
+  <div class="hero-card fu d2">
+    <div class="card-header">
+      <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+      <span class="card-title">devlog — terminal</span>
+    </div>
+    <div class="card-body">
+      <div class="cl"><span class="cp">~</span> <span class="cc">devlog add </span><span class="ca">"fixed JWT refresh token bug"</span></div>
+      <div class="co">✓ Saved · #bug · 09:43 AM</div>
+      <div class="cl"><span class="cp">~</span> <span class="cc">devlog add </span><span class="ca">"dashboard redesign" --tag feature</span></div>
+      <div class="co">✓ Saved · #feature · 11:20 AM</div>
+      <div class="cl"><span class="cp">~</span> <span class="cc">devlog summary </span><span class="ca">--week</span></div>
+      <div class="co" style="border-color:rgba(57,211,83,.3);color:var(--accent)">Week of May 19–25<br/>12 entries · 3 features · 4 bugs<br/>0 unresolved blockers · 🔥 5-day streak</div>
+      <div class="cl"><span class="cp" style="color:var(--accent)">▮</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section fu d1">
+  <div class="s-label">activity</div>
+  <div class="s-title">Your output, visualized.</div>
+  <div class="s-sub mono">// every working day you log → one cell fills green</div>
+  <div class="graph-wrap">
+    <div class="graph-top">
+      <span class="graph-name">287 log entries this year</span>
+      <span class="graph-count">🔥 23-day streak</span>
+    </div>
+    <div id="graph"></div>
+    <div class="graph-legend">
+      <span class="legend-label">less</span>
+      <div class="legend-cells">
+        <div class="day-cell"></div><div class="day-cell l1"></div>
+        <div class="day-cell l2"></div><div class="day-cell l3"></div><div class="day-cell l4"></div>
+      </div>
+      <span class="legend-label">more</span>
+    </div>
+  </div>
+</section>
+
+<div class="diff-section">
+  <div>
+    <div class="s-label">daily log</div>
+    <div class="s-title" style="font-size:22px;">Standup as a diff.</div>
+    <div class="s-sub mono" style="margin-bottom:14px;">// what changed, what broke, what's next</div>
+    <div class="diff-card">
+      <div class="diff-hdr">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="file-badge">MON</span>
+          <span class="diff-fn">standup_2025-05-20.md</span>
+        </div>
+        <span class="diff-meta">+7 −2</span>
+      </div>
+      <div class="dl d-ctx"><span class="dn">1</span><span class="dc">## Yesterday</span></div>
+      <div class="dl d-del"><span class="dn">2</span><span class="dc">- Struggling with auth flow</span></div>
+      <div class="dl d-add"><span class="dn">2</span><span class="dc">+ Fixed JWT refresh token bug</span></div>
+      <div class="dl d-add"><span class="dn">3</span><span class="dc">+ Refactored middleware/auth.js</span></div>
+      <div class="dl d-ctx"><span class="dn"> </span><span class="dc"> </span></div>
+      <div class="dl d-ctx"><span class="dn">5</span><span class="dc">## Today</span></div>
+      <div class="dl d-add"><span class="dn">6</span><span class="dc">+ Begin dashboard component</span></div>
+      <div class="dl d-add"><span class="dn">7</span><span class="dc">+ Wire up /logs API endpoint</span></div>
+      <div class="dl d-ctx"><span class="dn"> </span><span class="dc"> </span></div>
+      <div class="dl d-ctx"><span class="dn">9</span><span class="dc">## Blockers</span></div>
+      <div class="dl d-del"><span class="dn">10</span><span class="dc">- MongoDB Atlas drops connections</span></div>
+      <div class="dl d-add"><span class="dn">10</span><span class="dc">+ ✓ Resolved via pool config fix</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="s-label" style="margin-top:38px;">problem mode</div>
+    <div class="s-title" style="font-size:22px;">Every blocker, tracked.</div>
+    <div class="s-sub mono" style="margin-bottom:14px;">// treat each day like a contest</div>
+    <div class="tracker-wrap">
+      <div class="tracker-bar">
+        <div class="t-tabs">
+          <div class="tab active">All</div>
+          <div class="tab">Bugs</div>
+          <div class="tab">Features</div>
+        </div>
+        <div class="t-stats">
+          <span class="ts-item" style="color:var(--green)">8 solved</span>
+          <span class="ts-item" style="color:var(--yellow)">2 active</span>
+          <span class="ts-item" style="color:var(--red)">1 blocked</span>
+        </div>
+      </div>
+      <div class="log-row">
+        <div class="ls ls-done"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <span class="diff-pill e">Easy</span>
+        <span class="log-title">Fix login redirect bug</span>
+        <div class="log-tags"><span class="log-tag">#bug</span></div>
+        <span class="log-time">09:43</span>
+      </div>
+      <div class="log-row">
+        <div class="ls ls-done"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>
+        <span class="diff-pill m">Medium</span>
+        <span class="log-title">Dashboard component skeleton</span>
+        <div class="log-tags"><span class="log-tag">#feature</span></div>
+        <span class="log-time">11:20</span>
+      </div>
+      <div class="log-row">
+        <div class="ls ls-doing"><svg width="8" height="8" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3" fill="#d29922"/></svg></div>
+        <span class="diff-pill m">Medium</span>
+        <span class="log-title">Wire up /logs GET endpoint</span>
+        <div class="log-tags"><span class="log-tag">#backend</span></div>
+        <span class="log-time">14:05</span>
+      </div>
+      <div class="log-row">
+        <div class="ls ls-block"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#f85149" stroke-width="2"><line x1="3" y1="3" x2="9" y2="9"/><line x1="9" y1="3" x2="3" y2="9"/></svg></div>
+        <span class="diff-pill h">Hard</span>
+        <span class="log-title">GitHub OAuth integration</span>
+        <div class="log-tags"><span class="log-tag">#blocker</span></div>
+        <span class="log-time">16:30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="s-label">features</div>
+  <div class="s-title">Everything a dev needs.</div>
+  <div class="s-sub mono">// markdown · offline-first · git-native · export ready</div>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-icon fi-g"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#3fb950" stroke-width="1.8"><rect x="2" y="3" width="16" height="14" rx="2"/><line x1="6" y1="8" x2="14" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg></div>
+      <div class="feat-name">Daily log entry</div>
+      <div class="feat-desc">Markdown editor with autosave. Yesterday / today / blockers format built in.</div>
+      <div class="feat-tag" style="color:var(--green);border-color:rgba(57,211,83,.25)">core</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-o"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#f0883e" stroke-width="1.8"><polyline points="4,14 8,10 11,13 16,7"/></svg></div>
+      <div class="feat-name">Streak tracker</div>
+      <div class="feat-desc">Contribution graph + daily streak. Don't break the chain.</div>
+      <div class="feat-tag" style="color:var(--orange);border-color:rgba(240,136,62,.25)">habit</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-p"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#bc8cff" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M8 10l2 2 4-4"/></svg></div>
+      <div class="feat-name">GitHub OAuth</div>
+      <div class="feat-desc">Link log entries to commits. See work map to actual pushes.</div>
+      <div class="feat-tag" style="color:var(--purple);border-color:rgba(188,140,255,.25)">integration</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-b"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#58a6ff" stroke-width="1.8"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg></div>
+      <div class="feat-name">Tag system</div>
+      <div class="feat-desc">Tag entries as #bug, #feature, #review. Filter by project.</div>
+      <div class="feat-tag" style="color:var(--blue);border-color:rgba(88,166,255,.25)">organize</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-y"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#d29922" stroke-width="1.8"><path d="M4 4h12v2H4zM4 9h8v2H4zM4 14h6v2H4z"/></svg></div>
+      <div class="feat-name">Weekly summary</div>
+      <div class="feat-desc">Auto-generates a weekly report. Paste into Slack or perf review.</div>
+      <div class="feat-tag" style="color:var(--yellow);border-color:rgba(210,153,34,.25)">report</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-r"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#f85149" stroke-width="1.8"><rect x="3" y="3" width="14" height="14" rx="2"/><line x1="8" y1="3" x2="8" y2="17"/></svg></div>
+      <div class="feat-name">CLI tool</div>
+      <div class="feat-desc">Log without leaving your terminal. <span class="mono" style="font-size:11px;color:#f85149">devlog add "..."</span> and done.</div>
+      <div class="feat-tag" style="color:var(--red);border-color:rgba(248,81,73,.25)">cli</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="streak-card">
+    <div class="streak-left">
+      <h3>Build a <em>23-day</em> streak.</h3>
+      <p>devs who log daily ship 3x more consistently.</p>
+      <div class="s-badges">
+        <span class="s-badge">7-day</span>
+        <span class="s-badge">30-day</span>
+        <span class="s-badge">100-day</span>
+      </div>
+    </div>
+    <div>
+      <div class="streak-num">23</div>
+      <div class="streak-label">current streak</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Start logging today.</h2>
+  <p>Your future self will thank you at the next perf review.</p>
+  <div class="cta-cmd"><span class="cta-prompt">$</span> npm install -g devlog</div>
+  <div class="cta-actions">
+    <button class="btn-p">Get started free</button>
+    <button class="btn-g">Read the docs</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">© 2025 DevLog</div>
+  <div class="footer-links">
+    <a href="#">github</a><a href="#">docs</a><a href="#">cli</a><a href="#">changelog</a>
+  </div>
+</footer>
+
+<script>
+const g=document.getElementById('graph');
+const wrap=document.createElement('div');
+wrap.style.cssText='display:flex;gap:2px;overflow:hidden;';
+const lvls=[0,0,0,1,1,2,3,4];
+for(let w=0;w<52;w++){
+  const col=document.createElement('div');
+  col.style.cssText='display:flex;flex-direction:column;gap:2px;';
+  for(let d=0;d<7;d++){
+    const c=document.createElement('div');
+    c.className='day-cell';
+    const r=Math.random();
+    if(r>.8){const l=lvls[Math.floor(Math.random()*lvls.length)];if(l)c.classList.add('l'+l);}
+    else if(r>.6)c.classList.add('l1');
+    col.appendChild(c);
+  }
+  wrap.appendChild(col);
+}
+const cols=[...wrap.children];
+cols.slice(-23).forEach(col=>{
+  [...col.children].forEach(c=>{
+    if(Math.random()>.15){c.className='day-cell';c.classList.add(Math.random()>.5?'l4':'l3');}
+  });
+});
+g.appendChild(wrap);
+</script>
+</body>
+</html>
